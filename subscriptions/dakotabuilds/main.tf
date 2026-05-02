@@ -27,3 +27,11 @@ resource "azurerm_dns_zone" "dakotabuilds-dns-zone" {
     name = "dakotabuilds.dev"
     resource_group_name = azurerm_resource_group.dakotabuilds-rg.name
 }
+
+resource "azurerm_dns_a_record" "test" {
+    name = "test"
+    zone_name = azurerm_dns_zone.dakotabuilds-dns-zone.name
+    resource_group_name = azurerm_dns_zone.dakotabuilds-dns-zone.resource_group_name
+    ttl = 300
+    records = ["76.149.229.188"]
+}
