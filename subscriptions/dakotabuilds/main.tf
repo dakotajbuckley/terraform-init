@@ -16,3 +16,9 @@ resource "azurerm_storage_account" "dakotabuilds" {
     account_tier = "Standard"
     account_replication_type = "LRS"
 }
+
+resource "azurerm_storage_container" "dakotabuild-terraform-state" {
+    name = "dakotabuilds-terraform-state"
+    storage_account_id = azurerm_storage_account.dakotabuilds.id
+    container_access_type = "private"
+}
