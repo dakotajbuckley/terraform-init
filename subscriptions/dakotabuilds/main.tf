@@ -1,10 +1,11 @@
-resource "local_file" "test" {
-    filename = "C:\\Users\\stati\\Desktop\\repos\\hi.txt"
-    content = "Whats up ${random_pet.my-pet.id}"
+provider "azurerm" {
+    features {
+      
+    }
 }
 
-resource "random_pet" "my-pet" {
-    length = 2
-    separator = "."
-    prefix = "mr"
+resource "azurerm_resource_group" "dakotabuilds-rg" {
+    name = "rg-01"
+    location = "westus2"
+
 }
