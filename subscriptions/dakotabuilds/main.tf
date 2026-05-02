@@ -9,8 +9,8 @@ resource "azurerm_resource_group" "dakotabuilds-rg" {
     location = "westus2"
 }
 
-resource "azurerm_storage_account" "dakotabuilds-sa" {
-    name = "dakotabuilds-sa"
+resource "azurerm_storage_account" "dakotabuilds" {
+    name = "dakotabuilds"
     resource_group_name = azurerm_resource_group.dakotabuilds-rg.name
     location = azurerm_resource_group.dakotabuilds-rg.location
     account_tier = "Standard"
