@@ -3,6 +3,10 @@ terraform {
       azurerm = {
         source = "hashicorp/azurerm"
       }
+      argocd = {
+        source = "argoproj-labs/argocd"
+        version = "7.15.3"
+      }
     }
 
     backend "azurerm" {
