@@ -29,3 +29,16 @@ resource "azurerm_dns_a_record" "test" {
     ttl = 300
     records = ["76.149.229.188"]
 }
+
+module "azure_virtual_network" {
+    source = "../../modules/azure_virtual_network"
+    resource_group_name = azurerm_resource_group.dakotabuilds-rg.name
+    location = azurerm_resource_group.dakotabuilds-rg.location
+    vnet_name = "dakotabuilds-vnet"
+    vnet_address_space = ["10.0.0.0/16"]
+    subnets = {
+      "dakotabuilds-snet-01" = ["10.0.10.0/24"]
+      "dakotabuilds-snet-02" = ["10.0.20.0/24"]
+      "dakotabuilds-snet-03" = ["10.0.30.0/24"]
+    }
+}

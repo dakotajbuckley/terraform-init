@@ -20,5 +20,5 @@ variable "vnet_address_space" {
 
 variable "subnets" {
     description = "The name of the subnets you'd like created"
-    type = map(string)
+    type = map(list(string))
 }
