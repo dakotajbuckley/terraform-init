@@ -42,3 +42,22 @@ module "azure_virtual_network" {
       "dakotabuilds-snet-03" = ["10.0.30.0/24"]
     }
 }
+
+module "azure_network_security_group" {
+    source = "../../modules/azure_network_security_group"
+    network_security_group_name = "dakotabuilds-nsg-01"
+    location = azurerm_resource_group.dakotabuilds-rg.location
+    resource_group_name = azurerm_resource_group.dakotabuilds-rg.name
+    security_rules = {
+      "allow-web-traffic" = {
+        priority = 100
+        direction = "Inbound"
+        access = "Allow"
+        protocol = "Tcp"
+        source_port_range = "*"
+        destination_port_ranges = ["80", "443"]
+        source_address_prefixes = ["76.149.229.188/32"]
+        destination_address_prefix = "*"
+      } 
+    }
+}
