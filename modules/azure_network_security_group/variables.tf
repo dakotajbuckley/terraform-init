@@ -29,3 +29,8 @@
         }))
   }
 
+  variable "subnet_ids_to_associate" {
+    description = "A list of subnet IDs to associate with the network security group"
+    type = set(string)
+  }
+

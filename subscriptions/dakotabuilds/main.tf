@@ -48,6 +48,7 @@ module "azure_network_security_group" {
     network_security_group_name = "dakotabuilds-nsg-01"
     location = azurerm_resource_group.dakotabuilds-rg.location
     resource_group_name = azurerm_resource_group.dakotabuilds-rg.name
+    subnet_ids_to_associate = [module.azure_virtual_network.subnet_ids.dakotabuilds-snet-01, module.azure_virtual_network.subnet_ids.dakotabuilds-snet-02, module.azure_virtual_network.subnet_ids.dakotabuilds-snet-03]
     security_rules = {
       "allow-web-traffic" = {
         priority = 100

@@ -18,3 +18,9 @@ resource "azurerm_network_security_group" "this" {
       resource_group_name         = var.resource_group_name
       network_security_group_name = azurerm_network_security_group.this.name
   }
+
+  resource "azurerm_subnet_network_security_group_association" "this" {
+    for_each = var.subnet_ids_to_associate
+    subnet_id = each.value
+    network_security_group_id = azurerm_network_security_group.this.id
+  }
