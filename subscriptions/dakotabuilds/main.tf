@@ -1,9 +1,3 @@
-provider "azurerm" {
-    features {
-      
-    }
-}
-
 resource "azurerm_resource_group" "dakotabuilds-rg" {
     name = "dakotabuilds-rg"
     location = "westus2"

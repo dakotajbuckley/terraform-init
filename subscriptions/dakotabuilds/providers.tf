@@ -18,3 +18,16 @@ terraform {
     }
 }
 
+provider "argocd" {
+  server_addr = "winserv-001:30001"
+  username = "admin"
+  password = "Indiana1985Jones!"
+  insecure = true
+}
+
+provider "azurerm" {
+    features {
+      
+    }
+}
+
