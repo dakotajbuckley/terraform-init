@@ -30,6 +30,7 @@ resource "azurerm_dns_a_record" "test" {
     records = ["76.149.229.188"]
 }
 
+# Creates a VNet then will create as many subnets as you pass in then associate those with the vnet
 module "azure_virtual_network" {
     source = "../../modules/azure_virtual_network"
     resource_group_name = azurerm_resource_group.dakotabuilds-rg.name
@@ -41,6 +42,7 @@ module "azure_virtual_network" {
     }
 }
 
+# Creates an NSG with what ever security rules you specify. Then will assocate that NSG with as many subnets as you'd like through IDs
 module "azure_network_security_group" {
     source = "../../modules/azure_network_security_group"
     network_security_group_name = "dakotabuilds-nsg-01"
