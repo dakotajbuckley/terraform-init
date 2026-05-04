@@ -1,6 +1,9 @@
 resource "azurerm_resource_group" "dakotabuilds-rg" {
     name = "dakotabuilds-rg"
     location = "westus2"
+    lifecycle {
+        prevent_destroy = true
+    }
 }
 
 resource "azurerm_storage_account" "dakotabuilds" {
@@ -9,12 +12,18 @@ resource "azurerm_storage_account" "dakotabuilds" {
     location = azurerm_resource_group.dakotabuilds-rg.location
     account_tier = "Standard"
     account_replication_type = "LRS"
+    lifecycle {
+      prevent_destroy = true
+    }
 }
 
 resource "azurerm_storage_container" "dakotabuild-terraform-state" {
     name = "dakotabuilds-terraform-state"
     storage_account_id = azurerm_storage_account.dakotabuilds.id
     container_access_type = "private"
+    lifecycle {
+      prevent_destroy = true
+    }
 }
 
 resource "azurerm_dns_zone" "dakotabuilds-dns-zone" {
@@ -56,9 +65,10 @@ module "azure_network_security_group" {
         access = "Allow"
         protocol = "Tcp"
         source_port_range = "*"
-        destination_port_ranges = ["80", "443"]
+        destination_port_ranges = ["80", "443", "22"]
         source_address_prefixes = ["76.149.229.188/32"]
         destination_address_prefix = "*"
       } 
     }
 }
+
