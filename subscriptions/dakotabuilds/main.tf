@@ -1,9 +1,11 @@
 resource "azurerm_resource_group" "dakotabuilds-rg" {
     name = "dakotabuilds-rg"
     location = "westus2"
-    lifecycle {
-        prevent_destroy = true
-    }
+}
+
+resource "azurerm_resource_group" "dakotabuilds-denmark-rg" {
+    name = "dakotabuilds-denmark-rg"
+    location = "denmarkeast"
 }
 
 resource "azurerm_storage_account" "dakotabuilds" {
@@ -12,18 +14,12 @@ resource "azurerm_storage_account" "dakotabuilds" {
     location = azurerm_resource_group.dakotabuilds-rg.location
     account_tier = "Standard"
     account_replication_type = "LRS"
-    lifecycle {
-      prevent_destroy = true
-    }
 }
 
 resource "azurerm_storage_container" "dakotabuild-terraform-state" {
     name = "dakotabuilds-terraform-state"
     storage_account_id = azurerm_storage_account.dakotabuilds.id
     container_access_type = "private"
-    lifecycle {
-      prevent_destroy = true
-    }
 }
 
 resource "azurerm_dns_zone" "dakotabuilds-dns-zone" {
@@ -70,5 +66,47 @@ module "azure_network_security_group" {
         destination_address_prefix = "*"
       } 
     }
+}
+
+module "azure_virtual_network_denmark" {
+    source = "../../modules/azure_virtual_network"
+    resource_group_name = azurerm_resource_group.dakotabuilds-denmark-rg.name
+    location = azurerm_resource_group.dakotabuilds-denmark-rg.location
+    vnet_name = "dakotabuilds-denmark-vnet"
+    vnet_address_space = ["10.10.0.0/16"]
+    subnets = {
+      "dakotabuilds-denmark-snet-01" = ["10.10.10.0/24"]
+    }
+}
+
+module "azure_network_security_group_denmark" {
+    source = "../../modules/azure_network_security_group"
+    network_security_group_name = "dakotabuilds-denmark-nsg-01"
+    location = azurerm_resource_group.dakotabuilds-denmark-rg.location
+    resource_group_name = azurerm_resource_group.dakotabuilds-denmark-rg.name
+    subnet_ids_to_associate = [for key, value in module.azure_virtual_network_denmark.subnet_ids : value]
+    security_rules = {
+      "allow-web-traffic" = {
+        priority = 100
+        direction = "Inbound"
+        access = "Allow"
+        protocol = "Tcp"
+        source_port_range = "*"
+        destination_port_ranges = ["80", "443", "22"]
+        source_address_prefixes = ["76.149.229.188/32"]
+        destination_address_prefix = "*"
+      } 
+    }
+}
+
+module "azure_linux_virtual_machine_denmark" {
+    source = "../../modules/azure_linux_virtual_machine"
+    resource_group_name = azurerm_resource_group.dakotabuilds-denmark-rg.name
+    location = "denmarkeast"
+    nic_name = "dakotabuilds-nic"
+    public_ip_name = "dakotabuilds-pip1"
+    admin_username = "dakotab"
+    subnet_id = module.azure_virtual_network_denmark.subnet_ids.dakotabuilds-denmark-snet-01
+    virtual_machine_name = "dakotabuilds-vm"
 }
 
