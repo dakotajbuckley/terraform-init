@@ -99,14 +99,14 @@ module "azure_network_security_group_denmark" {
     }
 }
 
-module "azure_linux_virtual_machine_denmark" {
-    source = "../../modules/azure_linux_virtual_machine"
-    resource_group_name = azurerm_resource_group.dakotabuilds-denmark-rg.name
-    location = "denmarkeast"
-    nic_name = "dakotabuilds-nic"
-    public_ip_name = "dakotabuilds-pip1"
-    admin_username = "dakotab"
-    subnet_id = module.azure_virtual_network_denmark.subnet_ids.dakotabuilds-denmark-snet-01
-    virtual_machine_name = "dakotabuilds-vm"
-}
+# module "azure_linux_virtual_machine_denmark" {
+#     source = "../../modules/azure_linux_virtual_machine"
+#     resource_group_name = azurerm_resource_group.dakotabuilds-denmark-rg.name
+#     location = "denmarkeast"
+#     nic_name = "dakotabuilds-nic"
+#     public_ip_name = "dakotabuilds-pip1"
+#     admin_username = "dakotab"
+#     subnet_id = module.azure_virtual_network_denmark.subnet_ids.dakotabuilds-denmark-snet-01
+#     virtual_machine_name = "dakotabuilds-vm"
+# }
 
